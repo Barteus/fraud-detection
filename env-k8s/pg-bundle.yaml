@@ -1,0 +1,34 @@
+bundle: kubernetes
+applications:
+  data-integrator:
+    charm: data-integrator
+    channel: latest/edge
+    revision: 80
+    scale: 1
+    options:
+      database-name: card-transactions
+    constraints: arch=amd64
+  postgresql-k8s:
+    charm: postgresql-k8s
+    channel: 14/stable
+    revision: 444
+    resources:
+      postgresql-image: 162
+    scale: 2
+    constraints: arch=amd64
+    storage:
+      pgdata: kubernetes,1,1024M
+    trust: true
+  self-signed-certificates:
+    charm: self-signed-certificates
+    channel: latest/stable
+    revision: 155
+    scale: 1
+    options:
+      ca-common-name: BPK Demo CA
+    constraints: arch=amd64
+relations:
+- - data-integrator:postgresql
+  - postgresql-k8s:database
+- - postgresql-k8s:certificates
+  - self-signed-certificates:certificates

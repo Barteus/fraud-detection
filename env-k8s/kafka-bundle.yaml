@@ -1,0 +1,49 @@
+bundle: kubernetes
+applications:
+  data-integrator:
+    charm: data-integrator
+    channel: latest/stable
+    revision: 78
+    scale: 1
+    options:
+      extra-user-roles: admin
+      topic-name: transactions
+    constraints: arch=amd64
+  kafka-k8s:
+    charm: kafka-k8s
+    channel: 3/stable
+    revision: 56
+    resources:
+      kafka-image: 43
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      data: kubernetes,1,10240M
+    trust: true
+  self-signed-certificates:
+    charm: self-signed-certificates
+    channel: latest/stable
+    revision: 155
+    scale: 1
+    options:
+      ca-common-name: BPK Demo CA
+    constraints: arch=amd64
+  zookeeper-k8s:
+    charm: zookeeper-k8s
+    channel: 3/stable
+    revision: 51
+    resources:
+      zookeeper-image: 29
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      zookeeper: kubernetes,1,10240M
+relations:
+- - kafka-k8s:zookeeper
+  - zookeeper-k8s:zookeeper
+- - data-integrator:kafka
+  - kafka-k8s:kafka-client
+- - zookeeper-k8s:certificates
+  - self-signed-certificates:certificates
+- - kafka-k8s:certificates
+  - self-signed-certificates:certificates
