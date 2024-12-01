@@ -3,14 +3,6 @@ import os
 import pandas as pd
 from sqlalchemy import create_engine
 
-
-def db_uri():
-    return os.getenv(
-        "PG_URIS",
-        "postgresql://relation_id_4:iDj09jAbl7qBQTgs@10.152.183.178:5432/card-transactions"
-    )
-
-
 if __name__ == "__main__":
 
     df = pd.read_csv("./data/creditcard_2023.csv", sep=",", index_col="id")

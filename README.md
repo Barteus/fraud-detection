@@ -11,7 +11,7 @@ TODOs:
   - [X] Kafka
   - [ ] *Kubeflow+Mlflow
   - [ ] *Spark
-- [ ] Ingest data from CSV to the PG
+- [X] Ingest data from CSV to the PG
 - [ ] Stream data from PG to the Kafka "Transactions" topic
 - [ ] *Deploy Pytorch model for fraud detection
 - [ ] Deploy Spark MLlib model for fraud detection 
