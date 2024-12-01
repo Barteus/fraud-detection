@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo apt install libpq-dev
+
 sudo snap install microk8s --channel 1.29-strict
 sudo microk8s enable hostpath-storage
 
@@ -13,7 +15,7 @@ juju deploy ./env-k8s/pg-bundle.yaml --model pg --trust
 
 juju status --watch 1s
 
-juju run data-integrator/leader get-credentials -m pg
+juju run data-integrator/leader get-credentials -m pg | yq '.postgresql.uris' | tee ./secrets/pg-uris.txt
 
 #kafka
 juju add-model kafka
@@ -22,3 +24,4 @@ juju deploy ./env-k8s/kafka-bundle.yaml --model kafka --trust
 juju status --watch 1s
 
 juju run data-integrator/leader get-credentials -m kafka
+
