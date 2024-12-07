@@ -1,4 +1,4 @@
-# Fraud Detection for Card transactions
+# [WIP] Fraud Detection for Card transactions
 
 Target Solution Architecture
 
@@ -40,10 +40,39 @@ Install the toolchain using the script `01_setup.sh`, invoke line by line and ch
 
 ### Ingest the data and upload to the PostgreSQL
 
+Download the data from Kaggle:
+
+```bash
+sudo apt install python3-pip -y
+pip install kaggle
+
+~/.local/bin/kaggle datasets download \
+    -d nelgiriyewithana/credit-card-fraud-detection-dataset-2023 \
+    -p data \
+    --unzip
+```
+
+Load into the PostgreSQL database:
+
 ```bash
 export PG_URIS=$(juju run data-integrator/leader get-credentials -m pg | yq '.postgresql.uris' | sed "s@postgresql-k8s-primary.pg.svc.cluster.local@$(kubectl get svc -n pg postgresql-k8s-primary -o json | jq -r '.spec.clusterIP')@")
 echo PG_URIS=$PG_URIS
 python3 ./apps/ingest.py
 ```
 
-### 
+Optional Kafka UI:
+```bash
+helm repo add kafka-ui https://provectus.github.io/kafka-ui-charts
+#helm install kafka-ui kafka-ui/kafka-ui
+
+helm install kafka-ui kafka-ui/kafka-ui -f ./env-k8s/kafka-ui-values.yaml -n kafka
+```
+
+### Enable streaming the data into Kafka
+
+Create Kafka topic:
+
+```Bash
+
+
+```

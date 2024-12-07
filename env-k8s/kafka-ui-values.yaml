@@ -1,0 +1,17 @@
+
+service.type: LoadBalancer
+
+yamlApplicationConfig:
+  dynamic:
+    config:
+      enabled: true
+  kafka:
+    clusters:
+      - name: bpk
+        bootstrapServers:  kafka-k8s-0.kafka-k8s-endpoints:9092
+        properties:
+          security.protocol: SASL_PLAINTEXT
+          sasl.mechanism: SCRAM-SHA-512
+          sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="admin" password="y4S8IxAE2XMEelztBQ9DoFWIiuxg67Ac";
+  auth:
+    type: disabled
